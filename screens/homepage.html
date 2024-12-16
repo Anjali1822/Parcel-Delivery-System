@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcel Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Carousel Styling */
+        .carousel-item {
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #prevBtn {
+            left: 10px;
+        }
+
+        #nextBtn {
+            right: 10px;
+        }
+
+        /* Additional Card Styling */
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section {
+            background-color: #f9fafb;
+            padding: 50px 0;
+        }
+
+        .info-card {
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            text-align: center;
+        }
+
+        .info-card h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+        }
+
+        .info-card p {
+            color: #4b5563;
+        }
+
+        /* New Section Styling */
+        .cta-section {
+            background-color: white;
+            padding: 50px 0;
+        }
+
+        .cta-content h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            margin-bottom: 30px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+
+        .cta-content .button {
+            background-color: #34d399;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cta-content .button:hover {
+            background-color: #10b981;
+        }
+
+        .footer-section {
+            background-color: #1f2937;
+            color: white;
+            padding: 30px 0;
+        }
+
+        .footer-links a {
+            color: #d1d5db;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-lg py-4">
+        <div class="max-w-screen-xl mx-auto flex justify-between items-center px-6">
+            <h1 class="text-2xl font-bold text-blue-800">Parcel Management System</h1>
+            <nav>
+                <ul class="flex gap-6">
+                    <li><a href="#" onclick="navigate('home')" class="text-gray-700 hover:text-blue-500">Home</a></li>
+                    <li><a href="bookingscreen.html" onclick="navigate('booking')" class="text-gray-700 hover:text-blue-500">Booking Service</a></li>
+                    <li><a href="#" onclick="navigate('tracking')" class="text-gray-700 hover:text-blue-500">Tracking</a></li>
+                    <li><a href="#" onclick="navigate('previousBooking')" class="text-gray-700 hover:text-blue-500">Previous Booking</a></li>
+                    <li><a href="#" onclick="navigate('contactSupport')" class="text-gray-700 hover:text-blue-500">Contact Support</a></li>
+                    <li><a href="#" onclick="logout()" class="text-red-500 hover:text-red-700">Logout</a></li>
+                </ul>
+            </nav>
+            <div id="welcomeUser" class="text-lg font-semibold text-gray-700"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section (Carousel) -->
+    <section class="carousel-container">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <!-- Slide 1 -->
+            <div class="carousel-item active bg-blue-100 text-blue-800 w-full h-full flex items-center justify-center">
+                <div class="text-center px-6">
+                    <h1 class="text-4xl font-bold mb-4">Effortless Parcel Management</h1>
+                    <p class="text-lg mb-6">Track, book, and manage your parcels all in one place.</p>
+                    <button class="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-500">Get Started</button>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item bg-green-100 text-green-800 w-full h-full flex items-center justify-center">
+                <div class="text-center px-6">
+                    <h1 class="text-4xl font-bold mb-4">Real-Time Updates</h1>
+                    <p class="text-lg mb-6">Stay updated with every step from pick-up to delivery.</p>
+                    <button class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-500">Track Now</button>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-item bg-yellow-100 text-yellow-800 w-full h-full flex items-center justify-center">
+                <div class="text-center px-6">
+                    <h1 class="text-4xl font-bold mb-4">Simple Booking Process</h1>
+                    <p class="text-lg mb-6">Book your parcels easily with a few clicks.</p>
+                    <button class="bg-yellow-600 text-white py-2 px-6 rounded-lg hover:bg-yellow-500">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carousel Navigation -->
+        <button id="prevBtn" class="carousel-nav-btn" aria-label="Previous">&lt;</button>
+        <button id="nextBtn" class="carousel-nav-btn" aria-label="Next">&gt;</button>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="max-w-screen-xl mx-auto text-center">
+            <div class="cta-content">
+                <h3>Empower Your Business with Advanced Parcel Management</h3>
+                <p>Minimize manual errors and labor with our Parcel Management System. Book a demo and start exploring today!</p>
+                <form class="w-full max-w-md mx-auto">
+                    <div class="input-group">
+                        <input type="text" placeholder="Enter your phone number" class="border p-3 w-full rounded-lg" />
+                    </div>
+                    <button type="submit" class="button">Book a Trial</button>
+                </form>
+                <p class="mt-6">We care about the protection of your data. <a href="#" class="text-blue-600">Privacy Policy</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Information Section (Cards) -->
+    <section class="info-section">
+        <div class="max-w-screen-xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Why Choose Our Parcel Management System?</h2>
+            <div class="flex flex-wrap justify-center">
+                <div class="info-card w-80 p-6">
+                    <h2 class="font-bold text-xl mb-2">Efficient Tracking</h2>
+                    <p>Keep track of your parcels in real-time from pick-up to delivery, with clear updates.</p>
+                </div>
+                <div class="info-card w-80 p-6">
+                    <h2 class="font-bold text-xl mb-2">Quick Booking</h2>
+                    <p>Book your parcel with a few simple clicks. Fast and easy, with no complicated steps.</p>
+                </div>
+                <div class="info-card w-80 p-6">
+                    <h2 class="font-bold text-xl mb-2">Reliable Support</h2>
+                    <p>Our dedicated support team is always available to assist you with any queries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FAQ Section with Modern Styling -->
+<section class="bg-gray-50 py-12">
+    <div class="max-w-screen-xl mx-auto text-center">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-8">Frequently Asked Questions</h2>
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">How do I track my parcel?</h3>
+                <p class="text-gray-600 leading-relaxed">You can track your parcel in real-time by using the tracking ID provided at booking.</p>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">Can I cancel a parcel booking?</h3>
+                <p class="text-gray-600 leading-relaxed">Yes, parcel bookings can be canceled within 24 hours of confirmation.</p>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">Is there any insurance for parcels?</h3>
+                <p class="text-gray-600 leading-relaxed">Yes, we offer parcel insurance to protect against loss or damage during transit.</p>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+                <h3 class="text-xl font-semibold text-blue-600 mb-4">What payment methods are accepted?</h3>
+                <p class="text-gray-600 leading-relaxed">We accept all major credit/debit cards, net banking, and UPI payments.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section with Modern Styling -->
+<section class="bg-white py-12">
+    <div class="max-w-screen-xl mx-auto text-center">
+        <h2 class="text-4xl font-extrabold text-gray-800 mb-8">What Our Clients Say</h2>
+        <div class="grid lg:grid-cols-3 gap-10">
+            <div class="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                <p class="text-gray-700 italic mb-6">"Excellent service with real-time updates. It made managing our logistics much easier!"</p>
+                <h4 class="font-bold text-blue-600">- John Doe, Logistics Manager</h4>
+            </div>
+            <div class="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                <p class="text-gray-700 italic mb-6">"The booking process is incredibly user-friendly. Highly recommend it!"</p>
+                <h4 class="font-bold text-blue-600">- Jane Smith, Business Owner</h4>
+            </div>
+            <div class="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                <p class="text-gray-700 italic mb-6">"Support team was very helpful. The best parcel management system we’ve used so far!"</p>
+                <h4 class="font-bold text-blue-600">- Raj Patel, Operations Head</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer Section -->
+    <footer class="footer-section">
+        <div class="max-w-screen-xl mx-auto text-center">
+            <div class="footer-links">
+                <a href="#">Overview</a>
+                <a href="#">Features</a>
+                <a href="#">Solutions</a>
+                <a href="#">Tutorials</a>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Blog</a>
+                <a href="#">Events</a>
+                <a href="#">Help Center</a>
+            </div>
+            <div class="mt-6">&copy; 2024 Parcel Management System. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+            showSlide(currentSlide);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+            showSlide(currentSlide);
+        });
+
+        setInterval(() => {
+            currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Retrieve the username from localStorage and display it
+        const currentUser = localStorage.getItem('username');
+        if (currentUser) {
+            document.getElementById("welcomeUser").innerText = `Welcome, ${currentUser}`;
+        } else {
+            alert("No user logged in. Redirecting to login page.");
+            window.location.href = "login.html";
+        }
+
+        function navigate(page) {
+            alert(`Navigating to ${page}...`);
+        }
+
+        function logout() {
+            localStorage.removeItem('username'); // Remove username from localStorage
+            alert('Logged out!');
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script>
+
+</body>
+
+</html>

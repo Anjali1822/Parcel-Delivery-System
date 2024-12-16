@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .invoice-section {
+            background: linear-gradient(to right, #f8fafc, #ffffff);
+        }
+
+        .invoice-header {
+            color: #1e3a8a;
+        }
+
+        .invoice-label {
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .invoice-value {
+            color: #1f2937;
+        }
+
+        .btn-back {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .btn-back:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <section class="invoice-section max-w-3xl mx-auto mt-12 bg-white p-10 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold invoice-header mb-8 text-center">Invoice</h2>
+
+        <div class="space-y-5">
+            <p><span class="invoice-label">Receiver:</span> <span id="receiverName" class="invoice-value"></span></p>
+            <p><span class="invoice-label">Address:</span> <span id="receiverAddress" class="invoice-value"></span></p>
+            <p><span class="invoice-label">Contact:</span> <span id="receiverContact" class="invoice-value"></span></p>
+            <p><span class="invoice-label">Parcel Contents:</span> <span id="parcelContents" class="invoice-value"></span></p>
+            <p><span class="invoice-label">Total Amount Paid:</span> <span id="totalAmount" class="invoice-value text-green-600 font-bold"></span></p>
+        </div>
+
+        <button onclick="goBack()"
+            class="btn-back w-full mt-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg font-bold">
+            Back to Home
+        </button>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
+            if (bookingDetails) {
+                document.getElementById('receiverName').innerText = bookingDetails.receiverName;
+                document.getElementById('receiverAddress').innerText = bookingDetails.receiverAddress;
+                document.getElementById('receiverContact').innerText = bookingDetails.receiverContact;
+                document.getElementById('parcelContents').innerText = bookingDetails.parcelContents;
+                document.getElementById('totalAmount').innerText = `$${bookingDetails.billAmount}`;
+            } else {
+                alert("No booking details found. Redirecting to homepage.");
+                window.location.href = "homepage.html";
+            }
+        });
+
+        function goBack() {
+            window.location.href = "homepage.html";
+        }
+    </script>
+</body>
+
+</html>
